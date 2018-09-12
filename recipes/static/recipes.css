@@ -1,0 +1,32 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+h2 {
+    border-bottom: 1px solid gray;
+    padding-bottom: 4px;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+.align-right {
+    text-align: end;
+}
+
+.border {
+    border: 1px solid black!important;
+    padding: 10px 15px 15px 15px;
+    margin-bottom: 15px; 
+}
+
+.center {
+    text-align: center;
+}
+
+.logout {
+    padding-top: 15px;
+}
