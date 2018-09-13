@@ -28,10 +28,10 @@
 </head>
 <body>
     <header class="row">
-        <div class="col-7">
+        <div class="col-6">
             <h1>Welcome {{ session["user"]["name"] }}!</h1>
         </div>
-        <div class="col-3"></div>
+        <div class="col-4"></div>
         <div class="logout col">
             <a class="btn btn-danger" href="/logout">Log Out</a>
         </div>
@@ -39,13 +39,13 @@
 
     <div class="row">
         <div class="col-1"></div>
-        <div class="col-2 center">
-            <p>Add a new recipe!</p>
+        <div class="col center">
+            <h5>Add a new recipe!</h5>
             <a class="btn btn-success" href="/add">Add New Recipe</a>
         </div>
         <div class="col-1"></div>
-        <div class="col-2 center">
-            <p>View your recipes</p>
+        <div class="col center">
+            <h5>View your recipes!</h5>
             <a class="btn btn-primary" href="/view">View Recipes</a>
         </div>
         <div class="col"></div>

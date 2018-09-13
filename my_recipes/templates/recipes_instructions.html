@@ -33,14 +33,20 @@
 
 <body>
     <header class="row">
-        <div class="col-7">
-            <h1>Welcome (user)!</h1>
+        <div class="col-6">
+            <h1>Welcome {{ session["user"]["name"] }}!</h1>
         </div>
         <div class="logout col">
             <a class="btn btn-warning" href="/dashboard">Dashboard</a>
         </div>
         <div class="logout col">
-            <a class="btn btn-info" href="/view">View Recipes</a>
+            <a class="btn btn-info" href="
+            {% if 'hide_all' in session.keys() %}
+            /view/all
+            {% else: %}
+            /view
+            {% endif %}
+            ">View Recipes</a>
         </div>
         <div class="logout col">
             <a class="btn btn-danger" href="/logout">Log Out</a>
@@ -52,11 +58,13 @@
     <div class="row border">
         <div class="col-3 align-right">
             <h5>Description:</h5>
+            <h5>Likes:</h5>
             <h5>Under 30 minutes:</h5>
             <h5>Instructions:</h5>
         </div>
         <div class="col">
             <h5>{{ session["recipe"]["description"] }}</h5>
+            <h5>{{ session["recipe"]["likes"] }}</h5>
             <h5>{{ session["recipe"]["under_30"] }}</h5>
             <h5>{{ session["recipe"]["instructions"] }}</h5>
         </div>
@@ -64,13 +72,21 @@
     <div class="row">
         <div class="col-3"></div>
         <div class="col-2">
-            <a class="btn btn-success" href="/view">Go Back</a>
+            <a class="btn btn-success" href="
+            {% if 'hide_all' in session.keys() %}
+            /view/all
+            {% else: %}
+            /view
+            {% endif %}
+            ">Go Back</a>
         </div>
         <div class="col">
-            <a class="btn btn-info" href="/edit/{{ session["recipe"]["id"] }}">Edit</a>
+            <a class="btn btn-info {{ session['hide_all'] }}" href="/edit/{{ session["recipe"]["id"] }}">Edit</a>
         </div>
         <div class="col-2">
-            <a class="btn btn-danger" href="/delete/{{ session["recipe"]["id"] }}">Delete</a>
+            <a class="btn btn-info {{ session['hide_my'] }}" href="/like/instr/{{ session["recipe"]["id"] }}">Like!</a>
+            <a class="btn btn-danger {{ session['hide_my'] }}" href="/unlike/instr/{{ session["recipe"]["id"] }}">Unlike</a>
+            <a class="btn btn-danger {{ session['hide_all'] }}" href="/delete/{{ session["recipe"]["id"] }}">Delete</a>
         </div>
         <div class="col-3"></div>
     </div>

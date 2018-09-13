@@ -33,11 +33,15 @@
 
 <body>
     <header class="row">
-        <div class="col-7">
-            <h1>Welcome (user)!</h1>
+        <div class="col-6">
+            <h1>Welcome {{ session["user"]["name"] }}!</h1>
         </div>
         <div class="logout col">
             <a class="btn btn-warning" href="/dashboard">Dashboard</a>
+        </div>
+        <div class="logout col">
+            <a class="btn btn-info {{ session['hide_all'] }}" href="/view/all">All Site Recipes</a>
+            <a class="btn btn-info {{ session['hide_my'] }}" href="/view">View My Recipes</a>
         </div>
         <div class="logout col">
             <a class="btn btn-danger" href="/logout">Log Out</a>
@@ -48,21 +52,30 @@
         <table class="table table-bordered table-dark">
             <thead>
                 <tr>
+                    {% if "hide_all" in session.keys() %}
+                        <td>Recipe Owner</td>
+                    {% endif %}
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Under 30 Minutes?</th>
+                    <td>Likes</td>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for recipe in session["my_recipes"] %}
                 <tr class="bg-primary">
+                    {% if "hide_all" in session.keys() %}
+                        <td>{{ recipe["recipe_owner"] }}</td>
+                    {% endif %}
                     <th>{{ recipe["name"] }}</th>
                     <td>{{ recipe["description"] }}</td>
                     <td>{{ recipe["under_30"] }}</td>
+                    <td>{{ recipe["likes"] }}</td>
                     <td>
                         <a class="btn btn-success" href="/instructions/{{ recipe['id'] }}">View Recipe</a>
-                        <a class="btn btn-danger" href="/delete/{{ recipe["id"] }}">Delete Recipe</a>
+                        <a class="btn btn-danger {{ session['hide_all'] }}" href="/delete/{{ recipe["id"] }}">Delete Recipe</a>
+                        <a class="btn btn-info {{ session['hide_my'] }}" href="/like/view/{{ recipe["id"] }}">Like!</a>
                     </td>
                 </tr>
                 {% endfor %}

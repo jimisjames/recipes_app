@@ -10,12 +10,15 @@ recipe = Recipe()
 
 class Recipes():
 
-    def home(self):
+    def add_recipe(self):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
 
-        session["user_id"] = ''
-        session["secret_hash"] = ''
+        session["title"] = "Add a Recipe!"
+        session["type"] = "add"
 
-        return render_template("recipes.html")
+        return render_template("recipes_create.html")
 
 
     def dashboard(self):
@@ -26,43 +29,137 @@ class Recipes():
         session["under_30"] = ""
 
 
-        if session["user_id"] == '':
+        if not "user_id" in session.keys():
             flash("Please log in to view this page", "login")
-            return redirect("/")
+            return redirect("/")  #failure
         else:
 
             session["user"] = recipe.getInfo()
             session["user"] = session["user"][0]
+
             if "secret_hash" in session.keys() and bcrypt.check_password_hash(session["secret_hash"], str(session["user"]["created_at"]) + "melon"):
-                return render_template("recipes_dashboard.html")
+                return render_template("recipes_dashboard.html")   #success
             else:
                 flash("Don't hack my site you jerk", "login")
-                return redirect("/")
-
-
-
-    def add_recipe(self):
-
-        session["title"] = "Add a Recipe!"
-        session["type"] = "add"
-
-        return render_template("recipes_create.html")
+                return redirect("/")  #failure
 
 
     def delete(self, recipe_id):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
 
         recipe.delete(recipe_id)
 
         return redirect("/view")
 
 
-    def view(self):
+    def edit(self, recipe_id):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
 
-        session["my_recipes"] = recipe.view()
+        session["recipe"] = recipe.getRecipe(recipe_id)
+        session["recipe"] = session["recipe"][0]
+        session["recipe_name"] = session["recipe"]["name"]
+        session["description"] = session["recipe"]["description"]
+        session["instructions"] = session["recipe"]["instructions"]
+        session["under_30"] = session["recipe"]["under_30"]
+        session["recipe_id"] = recipe_id
+        
+        session["title"] = "Edit " + session["recipe_name"] + ":"
+        session["type"] = "edit"
 
-        return render_template("recipes_view.html")
+        return render_template("recipes_create.html")
 
-    
+
+    def form(self):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
+
+        if len(request.form["name"]) < 3:
+            flash("Please enter a name", "name")
+
+        if len(request.form["description"]) < 3:
+            flash("Please enter a description", "description")
+
+        if len(request.form["instructions"]) < 3:
+            flash("Please enter instructions", "instructions")
+
+        if not "under_30" in request.form:
+            flash("Please indicate time to cook", "under_30")
+
+
+        if "_flashes" in session.keys():
+            session["recipe_name"] = request.form["name"]
+            session["description"] = request.form["description"]
+            session["instructions"] = request.form["instructions"]
+            if "under_30" in request.form.keys():
+                session["under_30"] = request.form["under_30"]
+            if session["type"] == "add":
+                return redirect("/add")
+            elif session["type"] == "edit":
+                return redirect("/edit/%s" % (session['recipe']['id']))
+        else:
+            session["recipe_name"] = ""
+            session["description"] = ""
+            session["instructions"] = ""
+            session["under_30"] = ""
+            if session["type"] == "add":
+                recipe.add_recipe()
+                return redirect("/view")
+            elif session["type"] == "edit":
+                recipe.edit_recipe()
+                return redirect("/instructions/%s" % str(session["recipe_id"]))
+
+
+    def home(self):
+
+        session.pop("user_id", None)
+        session.pop("secret_hash", None)
+
+        return render_template("recipes.html")
+
+
+    def instructions(self, recipe_id):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
+
+        session["recipe"] = recipe.getRecipe(recipe_id)
+        session["recipe"] = session["recipe"][0]
+
+        return render_template("recipes_instructions.html")
+
+
+    def like(self, page, recipe_id):
+        recipe.like(recipe_id)
+        if page == "instr":
+            return redirect("/instructions/%s" % (session["recipe"]["id"]))
+        elif page == "view":
+            return redirect("/view/all")
+
+
+    def logIn(self):
+
+        user = recipe.logIn()
+        if user:
+            session["user_id"] = user["id"]
+            session["secret_hash"] = bcrypt.generate_password_hash(str(user["created_at"]) + "melon")
+            return redirect("/dashboard")#success
+
+        session["name2"] = request.form["name"]
+        flash("Incorrect name or password", "login")
+        return redirect("/")#failure
+
+
+    def logOut(self):
+
+        session.clear()
+        return redirect("/")
+
+
     def reg(self):
 
         if len(request.form["name"]) < 2:
@@ -104,87 +201,40 @@ class Recipes():
             session["birth"] = request.form["birth"]
             return redirect("/") #failure
         else:
-            session["user_id"] = recipe.add_user()
-            print(str(session["user_id"]) + "*" * 10)
+            userIdCreated = recipe.add_user()
+            session["user_id"] = userIdCreated[0]
+            created_at = userIdCreated[1]
+            session["secret_hash"] = bcrypt.generate_password_hash(str(created_at) + "melon")
             return redirect("/dashboard") #success
-    
-
-    def logIn(self):
-
-        user = recipe.logIn()
-        if user:
-            session["user_id"] = user["id"]
-            session["secret_hash"] = bcrypt.generate_password_hash(str(user["created_at"]) + "melon")
-            return redirect("/dashboard")#success
-
-        session["name2"] = request.form["name"]
-        flash("Incorrect name or password", "login")
-        return redirect("/")#failure
 
 
-
-    def logOut(self):
-        session.clear()
-        return redirect("/")
-
-    
-    def edit(self, recipe_id):
-
-        session["recipe"] = recipe.getRecipe(recipe_id)
-        session["recipe"] = session["recipe"][0]
-        session["recipe_name"] = session["recipe"]["name"]
-        session["description"] = session["recipe"]["description"]
-        session["instructions"] = session["recipe"]["instructions"]
-        session["under_30"] = session["recipe"]["under_30"]
-        session["recipe_id"] = recipe_id
-        
-        session["title"] = "Edit " + session["recipe_name"] + ":"
-        session["type"] = "edit"
-
-        return render_template("recipes_create.html")
-
-    
-    def instructions(self, recipe_id):
-
-        session["recipe"] = recipe.getRecipe(recipe_id)
-        session["recipe"] = session["recipe"][0]
+    def unlike(self, page, recipe_id):
+        recipe.unlike(recipe_id)
+        if page == "instr":
+            return redirect("/instructions/%s" % (session["recipe"]["id"]))
+        elif page == "view":
+            return redirect("/view/all")
 
 
-        return render_template("recipes_instructions.html")
+    def view(self):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
+
+        session["my_recipes"] = recipe.view()
+        session['hide_my'] = "hide"
+        session.pop("hide_all", None)
+
+        return render_template("recipes_view.html")
 
 
-    def form(self):
+    def view_all(self):
+        if not "user_id" in session.keys():
+            flash("Please log in to view this page", "login")
+            return redirect("/")
 
-        if len(request.form["name"]) < 1:
-            flash("Please enter a name", "name")
+        session["my_recipes"] = recipe.view_all()
+        session['hide_all'] = "hide"
+        session.pop("hide_my", None)
 
-        if len(request.form["description"]) < 1:
-            flash("Please enter a description", "description")
-
-        if len(request.form["instructions"]) < 1:
-            flash("Please enter instructions", "instructions")
-
-        if not "under_30" in request.form:
-            flash("Please indicate time to cook", "under_30")
-
-
-        if "_flashes" in session.keys():
-            session["recipe_name"] = request.form["name"]
-            session["description"] = request.form["description"]
-            session["instructions"] = request.form["instructions"]
-            if "under_30" in request.form.keys():
-                session["under_30"] = request.form["under_30"]
-            if session["type"] == "add":
-                return redirect("/add")
-            elif session["type"] == "edit":
-                return redirect("/edit/%s" % (session['recipe']['id']))
-        else:
-            session["recipe_name"] = ""
-            session["description"] = ""
-            session["instructions"] = ""
-            session["under_30"] = ""
-            if session["type"] == "add":
-                recipe.add_recipe()
-            elif session["type"] == "edit":
-                recipe.edit_recipe()
-            return redirect("/view")
+        return render_template("recipes_view.html")

@@ -27,6 +27,10 @@ header {
     text-align: center;
 }
 
+.hide {
+    display: none!important;
+}
+
 .logout {
     padding-top: 15px;
 }
