@@ -14,9 +14,9 @@ def dashboard():
     return recipes.dashboard()
 
 
-@app.route("/create")
-def create():
-    return recipes.create()
+@app.route("/add")
+def add_recipe():
+    return recipes.add_recipe()
 
 
 @app.route("/view")
@@ -24,9 +24,14 @@ def view():
     return recipes.view()
 
 
-@app.route("/edit")
-def edit():
-    return recipes.edit()
+@app.route("/edit/<recipe_id>")
+def edit(recipe_id):
+    return recipes.edit(recipe_id)
+
+
+@app.route("/delete/<recipe_id>")
+def delete(recipe_id):
+    return recipes.delete(recipe_id)
 
 
 @app.route("/reg", methods=["POST"])
@@ -34,12 +39,12 @@ def reg():
     return recipes.reg()
 
 
-@app.route("/instructions")
-def instructions():
-    return recipes.instructions()
+@app.route("/instructions/<recipe_id>")
+def instructions(recipe_id):
+    return recipes.instructions(recipe_id)
 
 
-@app.route("/form")
+@app.route("/form", methods=["POST"])
 def form():
     return recipes.form()
 

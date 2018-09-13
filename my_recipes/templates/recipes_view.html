@@ -40,7 +40,7 @@
             <a class="btn btn-warning" href="/dashboard">Dashboard</a>
         </div>
         <div class="logout col">
-            <a class="btn btn-danger" href="/logOut">Log Out</a>
+            <a class="btn btn-danger" href="/logout">Log Out</a>
         </div>
     </header>
     <div class="row">
@@ -55,43 +55,17 @@
                 </tr>
             </thead>
             <tbody>
+                {% for recipe in session["my_recipes"] %}
                 <tr class="bg-primary">
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
+                    <th>{{ recipe["name"] }}</th>
+                    <td>{{ recipe["description"] }}</td>
+                    <td>{{ recipe["under_30"] }}</td>
                     <td>
-                        <a class="btn btn-success" href="/instructions">View Recipe</a>
-                        <a class="btn btn-danger" href="/delete/<arg>">Delete Recipe</a>
+                        <a class="btn btn-success" href="/instructions/{{ recipe['id'] }}">View Recipe</a>
+                        <a class="btn btn-danger" href="/delete/{{ recipe["id"] }}">Delete Recipe</a>
                     </td>
                 </tr>
-                <tr class="bg-info">
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <a class="btn btn-success" href="/instructions/<arg>">View Recipe</a>
-                        <a class="btn btn-danger" href="/delete/<arg>">Delete Recipe</a>
-                    </td>
-                </tr>
-                <tr class="bg-primary">
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>
-                        <a class="btn btn-success" href="/instructions/<arg>">View Recipe</a>
-                        <a class="btn btn-danger" href="/delete/<arg>">Delete Recipe</a>
-                    </td>
-                </tr>
-                <tr class="bg-info">
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>
-                        <a class="btn btn-success" href="/instructions/<arg>">View Recipe</a>
-                        <a class="btn btn-danger" href="/delete/<arg>">Delete Recipe</a>
-                    </td>
-                </tr>
-
+                {% endfor %}
             </tbody>
         </table>
     </div>

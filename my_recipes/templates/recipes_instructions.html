@@ -43,11 +43,11 @@
             <a class="btn btn-info" href="/view">View Recipes</a>
         </div>
         <div class="logout col">
-            <a class="btn btn-danger" href="/logOut">Log Out</a>
+            <a class="btn btn-danger" href="/logout">Log Out</a>
         </div>
     </header>
 
-    <h4>Instructions for (recipe name):</h4>
+    <h4>Instructions for {{ session["recipe"]["name"] }}:</h4>
 
     <div class="row border">
         <div class="col-3 align-right">
@@ -56,11 +56,9 @@
             <h5>Instructions:</h5>
         </div>
         <div class="col">
-            <h5>Pizza and Crap</h5>
-            <h5>Yes</h5>
-            <h5>(instructions) Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
-                Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
-                Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah</h5>
+            <h5>{{ session["recipe"]["description"] }}</h5>
+            <h5>{{ session["recipe"]["under_30"] }}</h5>
+            <h5>{{ session["recipe"]["instructions"] }}</h5>
         </div>
     </div>
     <div class="row">
@@ -69,10 +67,10 @@
             <a class="btn btn-success" href="/view">Go Back</a>
         </div>
         <div class="col">
-            <a class="btn btn-info" href="/edit/<arg>">Edit</a>
+            <a class="btn btn-info" href="/edit/{{ session["recipe"]["id"] }}">Edit</a>
         </div>
         <div class="col-2">
-            <a class="btn btn-danger" href="/delete/<arg>">Delete</a>
+            <a class="btn btn-danger" href="/delete/{{ session["recipe"]["id"] }}">Delete</a>
         </div>
         <div class="col-3"></div>
     </div>

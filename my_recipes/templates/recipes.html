@@ -38,7 +38,7 @@
             <form action="/reg" method="post">
                 <div class="form-group">
                     <label for="name">User Name:</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{ session['name'] }}">
                 </div>
                 {% with messages = get_flashed_messages(category_filter=["name"]) %}
                 {% if messages %}
@@ -49,7 +49,7 @@
                 {% endwith %}
                 <div class="form-group">
                     <label for="email">Email address</label>
-                    <input type="text" class="form-control" name="email" id="email" placeholder="Enter email">
+                    <input type="text" class="form-control" name="email" id="email" placeholder="Enter email" value="{{ session['email'] }}">
                 </div>
                 {% with messages = get_flashed_messages(category_filter=["email"]) %}
                 {% if messages %}
@@ -92,7 +92,7 @@
                 {% endwith %}
                 <div class="form-group">
                     <label for="datepicker">Date of Birth: <small>(Must be 18 years or older)</small></label>
-                    <input type="text" name="birth" id="datepicker">
+                    <input type="text" name="birth" id="datepicker" value="{{ session['birth'] }}">
                 </div>
                 {% with messages = get_flashed_messages(category_filter=["birth"]) %}
                 {% if messages %}
@@ -110,7 +110,7 @@
             <form action="/login" method="post">
                 <div class="form-group">
                     <label for="name">User Name:</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{ session['name2'] }}">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
