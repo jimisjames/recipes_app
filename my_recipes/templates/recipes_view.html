@@ -19,7 +19,7 @@
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css'>
     <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 
-    <link rel='stylesheet' href='recipes.css'>
+    <link rel='stylesheet' href="{{ url_for('static', filename='recipes.css') }}">
 
     <script>
 
@@ -38,9 +38,6 @@
         </div>
         <div class="logout col">
             <a class="btn btn-warning" href="/dashboard">Dashboard</a>
-        </div>
-        <div class="logout col">
-            <a class="btn btn-info" href="/view">View</a>
         </div>
         <div class="logout col">
             <a class="btn btn-danger" href="/logOut">Log Out</a>
@@ -63,7 +60,7 @@
                     <td>Mark</td>
                     <td>Otto</td>
                     <td>
-                        <a class="btn btn-success" href="/instructions/<arg>">View Recipe</a>
+                        <a class="btn btn-success" href="/instructions">View Recipe</a>
                         <a class="btn btn-danger" href="/delete/<arg>">Delete Recipe</a>
                     </td>
                 </tr>

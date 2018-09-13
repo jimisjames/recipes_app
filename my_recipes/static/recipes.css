@@ -30,3 +30,7 @@ header {
 .logout {
     padding-top: 15px;
 }
+
+.red {
+    color: red;
+}

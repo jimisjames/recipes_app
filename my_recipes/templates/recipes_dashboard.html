@@ -15,7 +15,7 @@
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css'>
     <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 
-    <link rel='stylesheet' href='recipes.css'>
+    <link rel='stylesheet' href="{{ url_for('static', filename='recipes.css') }}">
 
     <script>
 
@@ -29,11 +29,11 @@
 <body>
     <header class="row">
         <div class="col-7">
-            <h1>Welcome (user)!</h1>
+            <h1>Welcome {{ session["user"]["name"] }}!</h1>
         </div>
         <div class="col-3"></div>
         <div class="logout col">
-            <a class="btn btn-danger" href="/logOut">Log Out</a>
+            <a class="btn btn-danger" href="/logout">Log Out</a>
         </div>
     </header>
 
@@ -46,7 +46,7 @@
         <div class="col-1"></div>
         <div class="col-2 center">
             <p>View your recipes</p>
-            <a class="btn btn-primary" href="/view">View</a>
+            <a class="btn btn-primary" href="/view">View Recipes</a>
         </div>
         <div class="col"></div>
     </div>

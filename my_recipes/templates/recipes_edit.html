@@ -19,7 +19,7 @@
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css'>
     <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 
-    <link rel='stylesheet' href='recipes.css'>
+    <link rel='stylesheet' href="{{ url_for('static', filename='recipes.css') }}">
 
     <script>
 
@@ -40,7 +40,7 @@
             <a class="btn btn-warning" href="/dashboard">Dashboard</a>
         </div>
         <div class="logout col">
-            <a class="btn btn-info" href="/view">View</a>
+            <a class="btn btn-info" href="/view">View Recipes</a>
         </div>
         <div class="logout col">
             <a class="btn btn-danger" href="/logOut">Log Out</a>
@@ -49,7 +49,7 @@
 
     <div class="col-6 border">
         <h2>Edit (Recipe Name)</h2>
-        <form action="/reg" method="post">
+        <form action="/form" method="post">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="Recipe name" value="">

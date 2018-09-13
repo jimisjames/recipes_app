@@ -19,7 +19,7 @@
     <link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css'>
     <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
 
-    <link rel='stylesheet' href='recipes.css'>
+    <link rel='stylesheet' href="{{ url_for('static', filename='recipes.css') }}">
 
     <script>
 
@@ -40,13 +40,27 @@
                     <label for="name">User Name:</label>
                     <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["name"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <div class="form-group">
                     <label for="email">Email address</label>
                     <input type="text" class="form-control" name="email" id="email" placeholder="Enter email">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["email"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Dojo Location</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
+                    <select class="form-control" name="location" id="exampleFormControlSelect1">
                         <option>San Jose</option>
                         <option>New York</option>
                         <option>Cool Town</option>
@@ -58,14 +72,35 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["password"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <div class="form-group">
                     <label for="confirm_password">Confirm password</label>
                     <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm password">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["confirm_password"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <div class="form-group">
                     <label for="datepicker">Date of Birth: <small>(Must be 18 years or older)</small></label>
-                    <input type="text" id="datepicker">
+                    <input type="text" name="birth" id="datepicker">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["birth"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -78,9 +113,16 @@
                     <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="text" class="form-control" name="email" id="email" placeholder="Enter email">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
                 </div>
+                {% with messages = get_flashed_messages(category_filter=["login"]) %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="red">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
